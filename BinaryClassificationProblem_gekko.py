@@ -5,7 +5,7 @@ import math as mt
 #Developer: @KeivanTafakkori, 26 December 2021
 
 def classify(x,z,a):      
-    return round((1+mt.exp(sum(a[i]*x[i] for i in U) + z))**(-1))
+    return round((1+mt.exp(-(sum(a[i]*x[i] for i in U) + z)))**(-1))
 
 def model (U,T,a,b,normalize="y",solve="y"):
     m = op.GEKKO(remote=False, name='BinaryClassificationProblem') 
@@ -23,7 +23,7 @@ def model (U,T,a,b,normalize="y",solve="y"):
         n_a = {(t,i): a[t][i] for t,i in it.product(T,U)}
         n_b = {t: b[t] for t in T}  
     objs = {0: (2*len(T))**(-1)*sum((g[t]-n_b[t])**2 for t in T)}
-    cons = {0: {t: (g[t] == (1+m.exp(sum(n_a[(t,i)]*x[i] for i in U) + z))**(-1)) for t in T}}
+    cons = {0: {t: (g[t] == (1+m.exp(-(sum(n_a[(t,i)]*x[i] for i in U) + z)))**(-1)) for t in T}}
     m.Minimize(objs[0])
     for keys1 in cons:
         for keys2 in cons[keys1]: m.Equation(cons[keys1][keys2])   
