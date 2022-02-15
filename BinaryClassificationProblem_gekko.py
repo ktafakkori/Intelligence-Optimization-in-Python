@@ -7,7 +7,7 @@ import math as mt
 def classify(x,z,a):      
     return round((1+mt.exp(-(sum(a[i]*x[i] for i in U) + z)))**(-1))
 
-def model (U,T,a,b,lam,normalize="y",regularize="y",solve="y"):
+def model (U,T,a,b,lam,regularize="y",solve="y"):
     m = op.GEKKO(remote=False, name='BinaryClassificationProblem') 
     x = {i: m.Var(lb=None, ub=None) for i in U}
     z = m.Var(lb=None, ub=None)
